@@ -1,27 +1,190 @@
 {% extends "base.html" %}
 
+{% block extra_css %}
+<style>
+    .terminal {
+        background-color: #0d0d0d;
+        border: 2px solid #58a6ff;
+        border-radius: 8px;
+        padding: 20px;
+        font-family: 'Courier New', monospace;
+        color: #58a6ff;
+        max-width: 700px;
+        margin: 0 auto;
+        box-shadow: 0 0 30px rgba(88, 166, 255, 0.3), inset 0 0 20px rgba(88, 166, 255, 0.1);
+        overflow: hidden;
+    }
+
+    .terminal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #30363d;
+        color: #8b949e;
+        font-size: 12px;
+    }
+
+    .terminal-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .terminal-btn {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .terminal-btn.close { background-color: #ff5f57; }
+    .terminal-btn.minimize { background-color: #ffbd2e; }
+    .terminal-btn.maximize { background-color: #28c840; }
+
+    .terminal-content {
+        min-height: 200px;
+        line-height: 1.6;
+    }
+
+    .terminal-line {
+        margin: 8px 0;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    .prompt {
+        color: #58a6ff;
+        font-weight: bold;
+    }
+
+    .command {
+        color: #c9d1d9;
+        margin-left: 5px;
+    }
+
+    .output {
+        color: #8b949e;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 10px;
+        height: 20px;
+        background-color: #58a6ff;
+        margin-left: 2px;
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+        0%, 49% { background-color: #58a6ff; }
+        50%, 100% { background-color: transparent; }
+    }
+
+    .terminal-input {
+        display: flex;
+        align-items: center;
+        color: #58a6ff;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="relative" style="background-color: #0d1117;">
-    <!-- Hero Section -->
-    <section class="min-h-[60vh] flex items-center justify-center px-4">
-        <div class="text-center max-w-3xl mx-auto">
-            <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 glitch-text">
-                Welcome to Cảnh's Space
-            </h1>
-            <p class="text-xl text-gray-400 mb-8">
-                CTF Write-ups, Security Research & InfoSec Knowledge Base
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/blog" class="btn-primary px-8 py-3 rounded-lg font-bold">
-                    Read Write-ups
+    <!-- Terminal Hero Section -->
+    <section class="min-h-[70vh] flex items-center justify-center px-4 py-20">
+        <div class="w-full max-w-3xl">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span>canhspace@server ~ %</span>
+                    <div class="terminal-buttons">
+                        <div class="terminal-btn close"></div>
+                        <div class="terminal-btn minimize"></div>
+                        <div class="terminal-btn maximize"></div>
+                    </div>
+                </div>
+                <div class="terminal-content" id="terminal">
+                    <div class="terminal-line">
+                        <span class="prompt">┌──(canhspace㎕canh-sec) - HOME</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="prompt">└─$</span>
+                        <span class="command" id="line1"></span><span class="cursor" id="cursor1"></span>
+                    </div>
+                    <div class="terminal-line" id="output1" style="display:none;">
+                        <span class="output" id="output1-text"></span>
+                    </div>
+                    <div class="terminal-line" style="margin-top: 15px;">
+                        <span class="prompt">└─$</span>
+                        <span class="command" id="line2"></span><span class="cursor" id="cursor2"></span>
+                    </div>
+                    <div class="terminal-line" id="output2" style="display:none;">
+                        <span class="output" id="output2-text"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+                <a href="/blog" class="btn-primary px-8 py-3 rounded-lg font-bold text-center">
+                    📚 Read Write-ups
                 </a>
                 <a href="#about"
-                    class="border border-[#58a6ff] text-[#58a6ff] px-8 py-3 rounded-lg font-bold hover:bg-[#58a6ff]/10 transition duration-200">
-                    Learn More
+                    class="border border-[#58a6ff] text-[#58a6ff] px-8 py-3 rounded-lg font-bold hover:bg-[#58a6ff]/10 transition duration-200 text-center">
+                    💡 Learn More
                 </a>
             </div>
         </div>
     </section>
+
+    <script>
+        // Typing effect function
+        function typeText(element, text, speed = 50, callback = null) {
+            let i = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        // Initialize terminal typing animation
+        window.addEventListener('load', function() {
+            // First command
+            const cmd1 = "cat about.me";
+            const output1 = "👨‍💻 CTF Enthusiast | Security Researcher | InfoSec Blog";
+
+            // Second command
+            const cmd2 = "ls -la posts/";
+            const output2 = "total 42 | Latest write-ups and security research articles";
+
+            typeText(document.getElementById('line1'), cmd1, 60, function() {
+                document.getElementById('cursor1').style.display = 'none';
+                document.getElementById('output1').style.display = 'block';
+                typeText(document.getElementById('output1-text'), output1, 40, function() {
+                    
+                    // Second command after delay
+                    setTimeout(function() {
+                        document.getElementById('cursor2').style.display = 'block';
+                        typeText(document.getElementById('line2'), cmd2, 50, function() {
+                            document.getElementById('cursor2').style.display = 'none';
+                            document.getElementById('output2').style.display = 'block';
+                            typeText(document.getElementById('output2-text'), output2, 35);
+                        });
+                    }, 1000);
+                });
+            });
+        });
+    </script>
 
     <!-- Features Section -->
     <section class="max-w-7xl mx-auto px-4 py-20">
