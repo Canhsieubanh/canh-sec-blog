@@ -38,9 +38,17 @@
         cursor: pointer;
     }
 
-    .terminal-btn.close { background-color: #ff5f57; }
-    .terminal-btn.minimize { background-color: #ffbd2e; }
-    .terminal-btn.maximize { background-color: #28c840; }
+    .terminal-btn.close {
+        background-color: #ff5f57;
+    }
+
+    .terminal-btn.minimize {
+        background-color: #ffbd2e;
+    }
+
+    .terminal-btn.maximize {
+        background-color: #28c840;
+    }
 
     .terminal-content {
         min-height: 200px;
@@ -79,8 +87,16 @@
     }
 
     @keyframes blink {
-        0%, 49% { background-color: #58a6ff; }
-        50%, 100% { background-color: transparent; }
+
+        0%,
+        49% {
+            background-color: #58a6ff;
+        }
+
+        50%,
+        100% {
+            background-color: transparent;
+        }
     }
 
     .terminal-input {
@@ -144,7 +160,7 @@
         function typeText(element, text, speed = 50, callback = null) {
             let i = 0;
             element.textContent = '';
-            
+
             function type() {
                 if (i < text.length) {
                     element.textContent += text.charAt(i);
@@ -158,29 +174,34 @@
         }
 
         // Initialize terminal typing animation
-        window.addEventListener('load', function() {
-            // First command
-            const cmd1 = "cat about.me";
-            const output1 = "👨‍💻 CTF Enthusiast | Security Researcher | InfoSec Blog";
+        window.addEventListener('load', function () {
+            // First command - TShark packet analysis
+            const cmd1 = "tshark -r capture.pcap -Y \"tcp.port==443\" | head -5";
+            const output1 = `    1   0.000000    192.168.1.100 → 104.16.132.23  TLSv1.3 571 Client Hello
+    2   0.002341    104.16.132.23 → 192.168.1.100  TLSv1.3 83 Server Hello
+    3   0.004512    104.16.132.23 → 192.168.1.100  TLSv1.3 4337 Certificate
+    4   0.006823    192.168.1.100 → 104.16.132.23  TLSv1.3 139 Finished`;
 
-            // Second command
-            const cmd2 = "ls -la posts/";
-            const output2 = "total 42 | Latest write-ups and security research articles";
+            // Second command - Volatility memory analysis
+            const cmd2 = "volatility3 windows.pslist -f memory.dmp | grep -E 'explorer|svchost'";
+            const output2 = `explorer.exe       6288  1464  8.2M 2026-03-13 10:23:45
+svchost.exe       1024  456   12.5M 2026-03-13 09:15:30
+svchost.exe       2156  456   9.8M 2026-03-13 09:15:31`;
 
-            typeText(document.getElementById('line1'), cmd1, 60, function() {
+            typeText(document.getElementById('line1'), cmd1, 45, function () {
                 document.getElementById('cursor1').style.display = 'none';
                 document.getElementById('output1').style.display = 'block';
-                typeText(document.getElementById('output1-text'), output1, 40, function() {
-                    
+                typeText(document.getElementById('output1-text'), output1, 25, function () {
+
                     // Second command after delay
-                    setTimeout(function() {
+                    setTimeout(function () {
                         document.getElementById('cursor2').style.display = 'block';
-                        typeText(document.getElementById('line2'), cmd2, 50, function() {
+                        typeText(document.getElementById('line2'), cmd2, 40, function () {
                             document.getElementById('cursor2').style.display = 'none';
                             document.getElementById('output2').style.display = 'block';
-                            typeText(document.getElementById('output2-text'), output2, 35);
+                            typeText(document.getElementById('output2-text'), output2, 20);
                         });
-                    }, 1000);
+                    }, 1200);
                 });
             });
         });
