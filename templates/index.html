@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="relative" style="background-color: #0d1117;">
+    <!-- Hero Section -->
+    <section class="min-h-[60vh] flex items-center justify-center px-4">
+        <div class="text-center max-w-3xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 glitch-text">
+                Welcome to Cảnh's Space
+            </h1>
+            <p class="text-xl text-gray-400 mb-8">
+                CTF Write-ups, Security Research & InfoSec Knowledge Base
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/blog" class="btn-primary px-8 py-3 rounded-lg font-bold">
+                    Read Write-ups
+                </a>
+                <a href="#about"
+                    class="border border-[#58a6ff] text-[#58a6ff] px-8 py-3 rounded-lg font-bold hover:bg-[#58a6ff]/10 transition duration-200">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="max-w-7xl mx-auto px-4 py-20">
+        <h2 class="text-3xl font-bold text-white mb-12 text-center">Featured Content</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="card p-6 cursor-pointer group">
+                <div class="text-3xl mb-4">🔐</div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-[#58a6ff] transition duration-200">
+                    CTF Writeups
+                </h3>
+                <p class="text-gray-400">Detailed solutions & solutions from various CTF competitions</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card p-6 cursor-pointer group">
+                <div class="text-3xl mb-4">🔬</div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-[#58a6ff] transition duration-200">
+                    Security Research
+                </h3>
+                <p class="text-gray-400">Deep dives into security vulnerabilities and exploits</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card p-6 cursor-pointer group">
+                <div class="text-3xl mb-4">🛠️</div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-[#58a6ff] transition duration-200">
+                    Tools & Scripts
+                </h3>
+                <p class="text-gray-400">Useful resources and scripts for security testing</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Posts Preview Section -->
+    <section class="max-w-7xl mx-auto px-4 py-20">
+        <h2 class="text-3xl font-bold text-white mb-12 text-center">Latest Posts</h2>
+        {% if latest_posts %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for post in latest_posts %}
+            <a href="/post/{{ post.slug }}" class="card p-6 hover:border-[#58a6ff]">
+                <h3 class="text-xl font-bold text-[#58a6ff] mb-2">{{ post.title }}</h3>
+                <p class="text-gray-400 text-sm mb-4">{{ post.excerpt }}</p>
+                <div class="flex justify-between items-center text-xs text-gray-500">
+                    <span>{{ post.date | format_date }}</span>
+                    <span class="text-[#58a6ff] font-bold">Read →</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="/blog" class="btn-primary px-8 py-3 rounded-lg font-bold">
+                View All Posts
+            </a>
+        </div>
+        {% else %}
+        <div class="card p-6 text-center">
+            <p class="text-gray-400">No posts yet. Check back soon!</p>
+            <a href="/blog" class="btn-primary px-8 py-3 rounded-lg font-bold mt-4 inline-block">
+                Browse All Posts
+            </a>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="max-w-7xl mx-auto px-4 py-20">
+        <div class="card p-12">
+            <h2 class="text-3xl font-bold text-white mb-6">About This Blog</h2>
+            <div class="text-gray-400 space-y-4">
+                <p>
+                    Welcome to my security research and CTF writeup blog! Here you'll find in-depth analyses of
+                    security challenges, vulnerabilities, and techniques I've learned along my journey in
+                    information security.
+                </p>
+                <p>
+                    Whether you're a beginner looking to get started with CTF or an experienced security
+                    professional seeking new insights, I hope you'll find valuable content here.
+                </p>
+                <p>
+                    <strong>Disclaimer:</strong> All content is for educational purposes only. Always practice
+                    responsible disclosure and follow local laws.
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

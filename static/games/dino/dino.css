@@ -1,0 +1,6 @@
+/* Dino Game Styles */
+#dino-canvas {
+    display: block;
+    background: #0d1117;
+    border-radius: 8px;
+}

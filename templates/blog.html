@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Cảnh's Space{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-container {
+        margin-bottom: 40px;
+    }
+
+    .search-box {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 15px 20px;
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        color: #c9d1d9;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-box input:focus {
+        outline: none;
+        border-color: #58a6ff;
+        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+    }
+
+    .filters {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .filter-group label {
+        display: block;
+        color: #8b949e;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .filter-group select {
+        width: 100%;
+        padding: 10px;
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        color: #c9d1d9;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+    }
+
+    .filter-group select:hover,
+    .filter-group select:focus {
+        border-color: #58a6ff;
+        outline: none;
+    }
+
+    .active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .filter-badge {
+        background-color: #58a6ff;
+        color: #0d1117;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .filter-badge button {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 0;
+    }
+
+    .filter-badge button:hover {
+        opacity: 0.8;
+    }
+
+    .blog-grid {
+        display: grid;
+        gap: 20px;
+    }
+
+    .blog-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 24px;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .blog-card:hover {
+        border-color: #58a6ff;
+        background-color: #0d1117;
+        box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15);
+    }
+
+    .blog-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+        gap: 15px;
+    }
+
+    .blog-card h2 {
+        color: #58a6ff;
+        margin: 0;
+        font-size: 20px;
+        flex: 1;
+    }
+
+    .blog-card-date {
+        color: #8b949e;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .blog-card-excerpt {
+        color: #8b949e;
+        margin: 12px 0;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .blog-card-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #30363d;
+    }
+
+    .blog-meta-left {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .blog-meta-item {
+        font-size: 13px;
+        color: #8b949e;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .difficulty-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .difficulty-beginner {
+        background-color: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+    }
+
+    .difficulty-intermediate {
+        background-color: rgba(245, 158, 11, 0.2);
+        color: #f59e0b;
+    }
+
+    .difficulty-advanced {
+        background-color: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+    }
+
+    .blog-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .blog-tag {
+        background-color: #30363d;
+        color: #79b8ff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-decoration: none;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .blog-tag:hover {
+        background-color: #58a6ff;
+        color: #0d1117;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .no-results h3 {
+        color: #c9d1d9;
+        margin-bottom: 10px;
+    }
+
+    .no-results p {
+        color: #8b949e;
+        margin-bottom: 20px;
+    }
+
+    .clear-filters-btn {
+        background-color: #58a6ff;
+        color: #0d1117;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+    }
+
+    .clear-filters-btn:hover {
+        background-color: #79b8ff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="relative">
+    <!-- Header -->
+    <section class="max-w-7xl mx-auto px-4 py-20">
+        <h1 class="text-5xl font-bold text-white mb-4 glitch-text">Blog & Write-ups</h1>
+        <p class="text-xl text-gray-400">
+            Collection of CTF write-ups, security research, and technical articles
+        </p>
+    </section>
+
+    <!-- Search & Filters -->
+    <section class="max-w-7xl mx-auto px-4 pb-12">
+        <div class="search-container">
+            <form method="GET" action="/blog" id="filterForm">
+                <!-- Search Box -->
+                <div class="search-box">
+                    <input type="text" name="search" placeholder="🔍 Tìm kiếm bài viết..." value="{{ current_search }}"
+                        required>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <select name="category" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">Tất cả danh mục</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat }}" {% if cat==current_category %}selected{% endif %}>
+                                {{ cat }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Difficulty</label>
+                        <select name="difficulty" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">Tất cả cấp độ</option>
+                            <option value="Beginner" {% if current_difficulty=="Beginner" %}selected{% endif %}>
+                                Beginner
+                            </option>
+                            <option value="Intermediate" {% if current_difficulty=="Intermediate" %}selected{% endif %}>
+                                Intermediate
+                            </option>
+                            <option value="Advanced" {% if current_difficulty=="Advanced" %}selected{% endif %}>
+                                Advanced
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Tag</label>
+                        <select name="tag" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">Tất cả tags</option>
+                            {% for t in tags %}
+                            <option value="{{ t }}" {% if t==current_tag %}selected{% endif %}>
+                                {{ t }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Active Filters Display -->
+                {% if current_category or current_tag or current_difficulty or current_search %}
+                <div class="active-filters">
+                    {% if current_search %}
+                    <span class="filter-badge">
+                        Tìm: "{{ current_search }}"
+                        <button type="submit" formaction="/blog" formmethod="GET"
+                            onclick="document.querySelector('input[name=search]').value=''; this.form.submit()">
+                            ×
+                        </button>
+                    </span>
+                    {% endif %}
+                    {% if current_category %}
+                    <span class="filter-badge">
+                        {{ current_category }}
+                        <button type="submit"
+                            formaction="/blog?tag={{ current_tag }}&difficulty={{ current_difficulty }}&search={{ current_search }}"
+                            formmethod="GET">
+                            ×
+                        </button>
+                    </span>
+                    {% endif %}
+                    {% if current_difficulty %}
+                    <span class="filter-badge">
+                        {{ current_difficulty }}
+                        <button type="submit"
+                            formaction="/blog?category={{ current_category }}&tag={{ current_tag }}&search={{ current_search }}"
+                            formmethod="GET">
+                            ×
+                        </button>
+                    </span>
+                    {% endif %}
+                    {% if current_tag %}
+                    <span class="filter-badge">
+                        #{{ current_tag }}
+                        <button type="submit"
+                            formaction="/blog?category={{ current_category }}&difficulty={{ current_difficulty }}&search={{ current_search }}"
+                            formmethod="GET">
+                            ×
+                        </button>
+                    </span>
+                    {% endif %}
+                    <a href="/blog" class="clear-filters-btn">Xóa tất cả</a>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="max-w-7xl mx-auto px-4 pb-20">
+        {% if posts %}
+        <div class="blog-grid">
+            {% for post in posts %}
+            <a href="/post/{{ post.slug }}" class="blog-card">
+                <div class="blog-card-header">
+                    <h2>{{ post.title }}</h2>
+                    <span class="blog-card-date">{{ post.date | format_date }}</span>
+                </div>
+
+                <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+
+                <div class="blog-card-meta">
+                    <div class="blog-meta-left">
+                        <span class="blog-meta-item">📝 {{ post.author }}</span>
+                        <span class="blog-meta-item">⏱️ {{ post.readingTime }} min</span>
+                        <span class="blog-meta-item difficulty-badge difficulty-{{ post.difficulty.lower() }}">
+                            {{ post.difficulty }}
+                        </span>
+                    </div>
+                    <span class="blog-meta-item" style="color: #58a6ff; font-weight: bold;">
+                        {{ post.category }}
+                    </span>
+                </div>
+
+                <div class="blog-card-tags">
+                    {% for tag in post.tags %}
+                    <a href="/blog?tag={{ tag }}" class="blog-tag"
+                        onclick="event.preventDefault(); location.href='/blog?tag={{ tag }}'">
+                        #{{ tag }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-results">
+            <h3>No posts found :/</h3>
+            <p>Không tìm thấy bài viết phù hợp với tìm kiếm của bạn.</p>
+            <a href="/blog" class="clear-filters-btn">Xem tất cả bài viết</a>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

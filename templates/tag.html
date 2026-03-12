@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Tag: {{ tag_name }} - Cảnh's Space{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    .tag-chip {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        color: #79b8ff;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        text-decoration: none;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .tag-chip:hover {
+        border-color: #58a6ff;
+        background-color: #58a6ff;
+        color: #0d1117;
+    }
+
+    .tag-chip.active {
+        border-color: #58a6ff;
+        background-color: #58a6ff;
+        color: #0d1117;
+    }
+
+    .blog-grid {
+        display: grid;
+        gap: 20px;
+    }
+
+    .blog-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 24px;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .blog-card:hover {
+        border-color: #58a6ff;
+        background-color: #0d1117;
+        box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15);
+    }
+
+    .blog-card h2 {
+        color: #58a6ff;
+        margin: 0 0 12px 0;
+        font-size: 20px;
+    }
+
+    .blog-card-excerpt {
+        color: #8b949e;
+        margin: 12px 0;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .blog-card-meta {
+        display: flex;
+        gap: 15px;
+        font-size: 13px;
+        color: #8b949e;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #30363d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="relative">
+    <!-- Header -->
+    <section class="max-w-7xl mx-auto px-4 py-20">
+        <h1 class="text-5xl font-bold text-white mb-2 glitch-text">Tag: {{ tag_name }}</h1>
+        <p class="text-xl text-gray-400">
+            {{ posts|length }} post{{ 's' if posts|length != 1 else '' }} tagged with <strong>#{{ tag_name }}</strong>
+        </p>
+    </section>
+
+    <!-- Tag Cloud -->
+    <section class="max-w-7xl mx-auto px-4 pb-12">
+        <h2 class="text-2xl font-bold text-white mb-6">Other Tags</h2>
+        <div class="tag-cloud">
+            {% for tag in all_tags %}
+            <a href="/tag/{{ tag }}" class="tag-chip {% if tag == tag_name %}active{% endif %}">
+                #{{ tag }}
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="max-w-7xl mx-auto px-4 pb-20">
+        {% if posts %}
+        <div class="blog-grid">
+            {% for post in posts %}
+            <a href="/post/{{ post.slug }}" class="blog-card">
+                <h2>{{ post.title }}</h2>
+                <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+                <div class="blog-card-meta">
+                    <span>📅 {{ post.date | format_date }}</span>
+                    <span>📝 {{ post.author }}</span>
+                    <span>⏱️ {{ post.readingTime }} min</span>
+                    <span style="color: #58a6ff; font-weight: bold;">{{ post.category }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="card p-12 text-center">
+            <h3 class="text-xl font-bold text-white mb-4">No Posts Found</h3>
+            <p class="text-gray-400 mb-6">No posts are tagged with #{{ tag_name }} yet.</p>
+            <a href="/blog" class="btn-primary px-8 py-3 rounded-lg font-bold">
+                Back to Blog
+            </a>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

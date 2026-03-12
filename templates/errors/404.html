@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - Cảnh's Space{% endblock %}
+
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center px-4">
+    <div class="text-center max-w-2xl mx-auto">
+        <h1 class="text-9xl font-bold text-[#58a6ff] glitch-text mb-4">404</h1>
+        <h2 class="text-4xl font-bold text-white mb-4">Page Not Found</h2>
+        <p class="text-gray-400 text-lg mb-8">
+            Looks like you've discovered a page that doesn't exist yet.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/" class="btn-primary px-8 py-3 rounded-lg font-bold">
+                Go Home
+            </a>
+            <a href="/blog"
+                class="border border-[#58a6ff] text-[#58a6ff] px-8 py-3 rounded-lg font-bold hover:bg-[#58a6ff]/10 transition duration-200">
+                Read Blog
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

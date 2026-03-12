@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Cảnh's Space - CTF Write-ups & Security Research. Deep dives into cybersecurity challenges and hacking techniques.">
+    <meta name="keywords" content="CTF, cybersecurity, write-ups, hacking, security research, reverse engineering">
+    <meta name="author" content="Cảnh">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ BASE_URL }}">
+    <meta property="og:title" content="Cảnh's Space | CTF & InfoSec Blog">
+    <meta property="og:description" content="CTF Write-ups & Security Research">
+    <meta property="og:image" content="{{ BASE_URL }}/static/logo.png">
+    <meta property="og:site_name" content="Cảnh's Space">
+    <meta property="og:locale" content="vi_VN">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ BASE_URL }}">
+    <meta property="twitter:title" content="Cảnh's Space | CTF & InfoSec Blog">
+    <meta property="twitter:description" content="CTF Write-ups & Security Research">
+    <meta property="twitter:image" content="{{ BASE_URL }}/static/logo.png">
+
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Cảnh",
+      "url": "{{ BASE_URL }}",
+      "telephone": "+84 355977658",
+      "sameAs": [
+        "https://github.com/Canhsieubanh",
+        "https://www.facebook.com/canhsieubanh/"
+      ],
+      "jobTitle": "Security Researcher"
+    }
+    </script>
+
+    <title>{% block title %}Cảnh's Space | CTF & InfoSec{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon">
+    <link rel="alternate" type="application/rss+xml" title="Cảnh's Space RSS Feed" href="/feed.xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        code,
+        pre {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .glitch-text {
+            color: #58a6ff;
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+        }
+
+        .nav-link {
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #58a6ff;
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+        }
+
+        .btn-primary {
+            background-color: #58a6ff;
+            color: #0d1117;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #79b8ff;
+            box-shadow: 0 8px 16px rgba(88, 166, 255, 0.3);
+        }
+
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: #58a6ff;
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15);
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #58a6ff;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-[#0d1117]/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center space-x-3 cursor-pointer hover:opacity-80 transition"
+                    onclick="window.location.href='/'">
+                    <img class="h-10 w-10 rounded-full border-2 border-[#58a6ff]"
+                        src="{{ url_for('static', filename='logo.png') }}" alt="Logo"
+                        onerror="this.style.display='none'">
+                    <span class="text-xl font-bold text-white glitch-text">Cảnh's Space</span>
+                </div>
+
+                <!-- Menu items -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="/" class="nav-link text-gray-300">Home</a>
+                    <a href="/blog" class="nav-link text-gray-300">Blog</a>
+                    <a href="#about" class="nav-link text-gray-300">About</a>
+                    <a href="/contact" class="nav-link text-gray-300">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="pt-16 min-h-screen">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0d1117] border-t border-gray-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-white font-bold mb-4">Cảnh's Space</h3>
+                    <p class="text-gray-400 text-sm">CTF Write-ups & Security Research</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Quick Links</h3>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><a href="/" class="hover:text-[#58a6ff] transition duration-200">Home</a></li>
+                        <li><a href="/blog" class="hover:text-[#58a6ff] transition duration-200">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Follow</h3>
+                    <div class="space-y-2">
+                        <div><a href="https://github.com/Canhsieubanh" target="_blank"
+                                class="text-gray-400 hover:text-[#58a6ff] transition duration-200">GitHub</a></div>
+                        <div><a href="https://www.facebook.com/canhsieubanh/" target="_blank"
+                                class="text-gray-400 hover:text-[#58a6ff] transition duration-200">Facebook</a></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Contact</h3>
+                    <div class="text-gray-400 text-sm space-y-2">
+                        <div>📱 <a href="tel:+84355977658" class="hover:text-[#58a6ff] transition duration-200">+84
+                                355977658</a></div>
+                        <div>📍 Hanoi, Vietnam</div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2024 Cảnh's Space. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
