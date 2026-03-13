@@ -152,6 +152,11 @@
                     💡 Learn More
                 </a>
             </div>
+            
+            <!-- Audio elements for terminal typing sound -->
+            <audio id="typingSound" preload="auto">
+                <source src="/static/sounds/keyboard.mp3" type="audio/mpeg">
+            </audio>
         </div>
     </section>
 
@@ -160,13 +165,32 @@
         function typeText(element, text, speed = 50, callback = null) {
             let i = 0;
             element.textContent = '';
+            
+            // Audio setup for realistic feel (muffled/low volume)
+            const audio = document.getElementById('typingSound');
+            if (audio) {
+                audio.volume = 0.15; // Set very low volume to not be annoying
+                audio.playbackRate = 1.4; // Speed up natural typing sound
+            }
 
             function type() {
                 if (i < text.length) {
                     element.textContent += text.charAt(i);
+                    // Play sound intermittently for character types (not spaces) to mimic reality
+                    if (audio && text.charAt(i) !== ' ' && Math.random() > 0.3) {
+                        try {
+                            if (audio.paused) {
+                                audio.currentTime = 0;
+                                audio.play().catch(e => console.log("Audio autoplay prevented by browser"));
+                            }
+                        } catch (e) {}
+                    }
                     i++;
                     setTimeout(type, speed);
                 } else {
+                    if (audio) {
+                        setTimeout(() => { audio.pause(); }, 100);
+                    }
                     if (callback) callback();
                 }
             }
