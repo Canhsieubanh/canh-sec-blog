@@ -46,21 +46,78 @@
         margin-bottom: 8px;
     }
 
-    .filter-group select {
-        width: 100%;
-        padding: 10px;
+    /* Custom select UI */
+    .custom-select-wrapper {
+        position: relative;
+        user-select: none;
+    }
+    .custom-select {
+        position: relative;
+        padding: 10px 15px;
         background-color: #161b22;
         border: 1px solid #30363d;
         color: #c9d1d9;
         border-radius: 6px;
         cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         transition: border-color 0.2s ease;
+        height: 44px;
+        font-size: 15px;
     }
-
-    .filter-group select:hover,
-    .filter-group select:focus {
+    .custom-select:hover {
         border-color: #58a6ff;
-        outline: none;
+    }
+    .custom-select::after {
+        content: '▼';
+        font-size: 10px;
+        color: #8b949e;
+        transition: transform 0.2s ease;
+    }
+    .custom-select.open::after {
+        transform: rotate(180deg);
+    }
+    .custom-select.open {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-color: #58a6ff;
+    }
+    .custom-select span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 10px;
+    }
+    .custom-options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #161b22;
+        border: 1px solid #58a6ff;
+        border-top: none;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        z-index: 1000;
+        display: none;
+        max-height: 250px;
+        overflow-y: auto;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .custom-options.open {
+        display: block;
+    }
+    .custom-option {
+        padding: 10px 15px;
+        color: #c9d1d9;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-size: 15px;
+    }
+    .custom-option:hover, .custom-option.selected {
+        background-color: #30363d;
+        color: #58a6ff;
     }
 
     .active-filters {
@@ -271,42 +328,50 @@
                 <div class="filters">
                     <div class="filter-group">
                         <label>Category</label>
-                        <select name="category" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Tất cả danh mục</option>
-                            {% for cat in categories %}
-                            <option value="{{ cat }}" {% if cat==current_category %}selected{% endif %}>
-                                {{ cat }}
-                            </option>
-                            {% endfor %}
-                        </select>
+                        <div class="custom-select-wrapper">
+                            <input type="hidden" name="category" value="{{ current_category }}">
+                            <div class="custom-select" data-name="category">
+                                <span>{{ current_category if current_category else 'Tất cả danh mục' }}</span>
+                            </div>
+                            <div class="custom-options">
+                                <div class="custom-option {% if not current_category %}selected{% endif %}" data-value="">Tất cả danh mục</div>
+                                {% for cat in categories %}
+                                <div class="custom-option {% if cat == current_category %}selected{% endif %}" data-value="{{ cat }}">{{ cat }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="filter-group">
                         <label>Difficulty</label>
-                        <select name="difficulty" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Tất cả cấp độ</option>
-                            <option value="Beginner" {% if current_difficulty=="Beginner" %}selected{% endif %}>
-                                Beginner
-                            </option>
-                            <option value="Intermediate" {% if current_difficulty=="Intermediate" %}selected{% endif %}>
-                                Intermediate
-                            </option>
-                            <option value="Advanced" {% if current_difficulty=="Advanced" %}selected{% endif %}>
-                                Advanced
-                            </option>
-                        </select>
+                        <div class="custom-select-wrapper">
+                            <input type="hidden" name="difficulty" value="{{ current_difficulty }}">
+                            <div class="custom-select" data-name="difficulty">
+                                <span>{{ current_difficulty if current_difficulty else 'Tất cả cấp độ' }}</span>
+                            </div>
+                            <div class="custom-options">
+                                <div class="custom-option {% if not current_difficulty %}selected{% endif %}" data-value="">Tất cả cấp độ</div>
+                                <div class="custom-option {% if current_difficulty == 'Beginner' %}selected{% endif %}" data-value="Beginner">Beginner</div>
+                                <div class="custom-option {% if current_difficulty == 'Intermediate' %}selected{% endif %}" data-value="Intermediate">Intermediate</div>
+                                <div class="custom-option {% if current_difficulty == 'Advanced' %}selected{% endif %}" data-value="Advanced">Advanced</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="filter-group">
                         <label>Tag</label>
-                        <select name="tag" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Tất cả tags</option>
-                            {% for t in tags %}
-                            <option value="{{ t }}" {% if t==current_tag %}selected{% endif %}>
-                                {{ t }}
-                            </option>
-                            {% endfor %}
-                        </select>
+                        <div class="custom-select-wrapper">
+                            <input type="hidden" name="tag" value="{{ current_tag }}">
+                            <div class="custom-select" data-name="tag">
+                                <span>{{ current_tag if current_tag else 'Tất cả tags' }}</span>
+                            </div>
+                            <div class="custom-options">
+                                <div class="custom-option {% if not current_tag %}selected{% endif %}" data-value="">Tất cả tags</div>
+                                {% for t in tags %}
+                                <div class="custom-option {% if t == current_tag %}selected{% endif %}" data-value="{{ t }}">{{ t }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -405,4 +470,67 @@
         {% endif %}
     </section>
 </div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Custom select logic
+        const wrappers = document.querySelectorAll('.custom-select-wrapper');
+        
+        wrappers.forEach(wrapper => {
+            const select = wrapper.querySelector('.custom-select');
+            const options = wrapper.querySelector('.custom-options');
+            const optionItems = wrapper.querySelectorAll('.custom-option');
+            const input = wrapper.querySelector('input[type="hidden"]');
+            const span = select.querySelector('span');
+
+            // Toggle dropdown
+            select.addEventListener('click', (e) => {
+                // Close other dropdowns first
+                document.querySelectorAll('.custom-select.open').forEach(el => {
+                    if (el !== select) {
+                        el.classList.remove('open');
+                        el.nextElementSibling.classList.remove('open');
+                    }
+                });
+                
+                select.classList.toggle('open');
+                options.classList.toggle('open');
+                e.stopPropagation();
+            });
+
+            // Select an option
+            optionItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const value = item.getAttribute('data-value');
+                    const text = item.textContent;
+                    
+                    input.value = value;
+                    span.textContent = text;
+                    
+                    // Update active state
+                    optionItems.forEach(opt => opt.classList.remove('selected'));
+                    item.classList.add('selected');
+                    
+                    select.classList.remove('open');
+                    options.classList.remove('open');
+                    
+                    // Submit form
+                    document.getElementById('filterForm').submit();
+                    e.stopPropagation();
+                });
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select.open').forEach(el => {
+                el.classList.remove('open');
+                el.nextElementSibling.classList.remove('open');
+            });
+        });
+    });
+</script>
+{% endblock %}
+
 {% endblock %}
