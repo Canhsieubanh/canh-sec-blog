@@ -117,7 +117,7 @@
             <!-- Intro Text -->
             <div class="flex flex-col gap-6">
                 <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight">
-                    Cảnh's <span class="text-[#58a6ff]">Security Space</span>
+                    Cảnh's <span class="text-[#58a6ff]">Space</span>
                 </h1>
                 <p class="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
                     Digital Forensics 🔍, Malware Analysis 🦠, and CTF Write-ups 🚩. Documenting my journey through the
@@ -191,27 +191,31 @@
                             <span class="prompt text-gray-400">canhspace@server ~ %</span>
                             <span class="command" id="ssh-cmd"></span><span class="cursor" id="ssh-cursor"></span>
                         </div>
-                        
+
                         <!-- Hidden Kali session (Shows after SSH connects) -->
                         <div id="kali-session" style="display:none;">
-                            <div class="terminal-line text-[#8b949e] mb-2 mt-2 text-xs font-mono" style="white-space: pre-wrap; word-break: break-word;">Linux canh-sec 6.8.0-kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.8.0-1 x86_64
+                            <div class="terminal-line text-[#8b949e] mb-2 mt-2 text-xs font-mono"
+                                style="white-space: pre-wrap; word-break: break-word;">Linux canh-sec 6.8.0-kali-amd64
+                                #1 SMP PREEMPT_DYNAMIC Kali 6.8.0-1 x86_64
 
-★ Welcome to Canh's Interactive Security Workspace ★
-  [+] Digital Forensics & Incident Response
-  [+] Threat Hunting & Malware Analysis
+                                ★ Welcome to Canh's Interactive Security Workspace ★
+                                [+] Digital Forensics & Incident Response
+                                [+] Threat Hunting & Malware Analysis
 
-Last login: Fri Mar 13 08:31:02 2026 from 192.168.1.45</div>
+                                Last login: Fri Mar 13 08:31:02 2026 from 192.168.1.45</div>
                             <div class="terminal-line">
                                 <span class="prompt text-[#58a6ff] font-bold">┌──(canh㎕canh-sec)-[~]</span>
                             </div>
                             <div class="terminal-line">
                                 <span class="prompt text-[#58a6ff] font-bold">└─$</span>
-                                <span class="command" id="line1"></span><span class="cursor" id="cursor1" style="display:none;"></span>
+                                <span class="command" id="line1"></span><span class="cursor" id="cursor1"
+                                    style="display:none;"></span>
                             </div>
-                            <div class="terminal-line" id="output1" style="display:none; font-size: 0.9em; white-space: pre;">
+                            <div class="terminal-line" id="output1"
+                                style="display:none; font-size: 0.9em; white-space: pre;">
                                 <span class="output" id="output1-text"></span>
                             </div>
-                            
+
                             <!-- Second command wrapper -->
                             <div id="cmd2-wrapper" style="display:none; margin-top: 15px;">
                                 <div class="terminal-line">
@@ -219,9 +223,11 @@ Last login: Fri Mar 13 08:31:02 2026 from 192.168.1.45</div>
                                 </div>
                                 <div class="terminal-line">
                                     <span class="prompt text-[#58a6ff] font-bold">└─$</span>
-                                    <span class="command" id="line2"></span><span class="cursor" id="cursor2" style="display:none;"></span>
+                                    <span class="command" id="line2"></span><span class="cursor" id="cursor2"
+                                        style="display:none;"></span>
                                 </div>
-                                <div class="terminal-line" id="output2" style="display:none; font-size: 0.9em; white-space: pre;">
+                                <div class="terminal-line" id="output2"
+                                    style="display:none; font-size: 0.9em; white-space: pre;">
                                     <span class="output" id="output2-text"></span>
                                 </div>
                             </div>
@@ -321,32 +327,32 @@ Last login: Fri Mar 13 08:31:02 2026 from 192.168.1.45</div>
             // Start typing SSH
             typeText(document.getElementById('ssh-cmd'), cmd0, 45, function () {
                 document.getElementById('ssh-cursor').style.display = 'none';
-                
+
                 // Simulate SSH connection delay then show Kali banner
-                setTimeout(function() {
+                setTimeout(function () {
                     document.getElementById('kali-session').style.display = 'block';
                     document.getElementById('cursor1').style.display = 'inline-block';
 
                     // Start typing Command 1
-                    setTimeout(function() {
+                    setTimeout(function () {
                         typeText(document.getElementById('line1'), cmd1, 45, function () {
                             document.getElementById('cursor1').style.display = 'none';
                             document.getElementById('output1').style.display = 'block';
-                            
+
                             typeText(document.getElementById('output1-text'), output1, 25, function () {
                                 // Show Command 2 wrapper after output 1
                                 setTimeout(function () {
                                     document.getElementById('cmd2-wrapper').style.display = 'block';
                                     document.getElementById('cursor2').style.display = 'inline-block';
-                                    
+
                                     // Start typing Command 2
                                     typeText(document.getElementById('line2'), cmd2, 40, function () {
                                         document.getElementById('cursor2').style.display = 'none';
                                         document.getElementById('output2').style.display = 'block';
-                                        
-                                        typeText(document.getElementById('output2-text'), output2, 20, function() {
+
+                                        typeText(document.getElementById('output2-text'), output2, 20, function () {
                                             // Show final blinking prompt waiting for input
-                                            setTimeout(function() {
+                                            setTimeout(function () {
                                                 document.getElementById('final-prompt').style.display = 'block';
                                                 // auto scroll to bottom when finished
                                                 const terminalContent = document.getElementById('terminal');
