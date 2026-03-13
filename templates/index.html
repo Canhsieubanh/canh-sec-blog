@@ -178,7 +178,7 @@
                 <!-- Terminal UI -->
                 <div class="terminal w-full text-xs sm:text-sm p-4">
                     <div class="terminal-header mb-4">
-                        <span>canhspace@server ~ %</span>
+                        <span>canhspace@server ~ % ssh canh@sec-server.local</span>
                         <div class="terminal-buttons">
                             <div class="terminal-btn close"></div>
                             <div class="terminal-btn minimize"></div>
@@ -186,31 +186,56 @@
                         </div>
                     </div>
                     <div class="terminal-content" id="terminal" style="min-height: 15rem;">
-                        <div class="terminal-line text-[#8b949e] mb-2 text-xs font-mono">
-                            Linux canh-sec 6.8.0-kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.8.0-1 x86_64<br>
-                            <br>
-                            ★ Welcome to Canh's Interactive Security Workspace ★<br>
-                            &nbsp;&nbsp;[+] Digital Forensics & Incident Response<br>
-                            &nbsp;&nbsp;[+] Threat Hunting & Malware Analysis<br>
-                            <br>
-                            Last login: Tue Mar 13 08:31:02 2026 on tty1
+                        <!-- Initial SSH execution line -->
+                        <div class="terminal-line" id="ssh-line">
+                            <span class="prompt text-gray-400">canhspace@server ~ %</span>
+                            <span class="command" id="ssh-cmd"></span><span class="cursor" id="ssh-cursor"></span>
                         </div>
-                        <div class="terminal-line">
-                            <span class="prompt">┌──(canhspace㎕canh-sec) - HOME</span>
-                        </div>
-                        <div class="terminal-line">
-                            <span class="prompt">└─$</span>
-                            <span class="command" id="line1"></span><span class="cursor" id="cursor1"></span>
-                        </div>
-                        <div class="terminal-line" id="output1" style="display:none; font-size: 0.9em;">
-                            <span class="output" id="output1-text"></span>
-                        </div>
-                        <div class="terminal-line" style="margin-top: 15px;">
-                            <span class="prompt">└─$</span>
-                            <span class="command" id="line2"></span><span class="cursor" id="cursor2"></span>
-                        </div>
-                        <div class="terminal-line" id="output2" style="display:none; font-size: 0.9em;">
-                            <span class="output" id="output2-text"></span>
+                        
+                        <!-- Hidden Kali session (Shows after SSH connects) -->
+                        <div id="kali-session" style="display:none;">
+                            <div class="terminal-line text-[#8b949e] mb-2 mt-2 text-xs font-mono" style="white-space: pre-wrap; word-break: break-word;">Linux canh-sec 6.8.0-kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.8.0-1 x86_64
+
+★ Welcome to Canh's Interactive Security Workspace ★
+  [+] Digital Forensics & Incident Response
+  [+] Threat Hunting & Malware Analysis
+
+Last login: Fri Mar 13 08:31:02 2026 from 192.168.1.45</div>
+                            <div class="terminal-line">
+                                <span class="prompt text-[#58a6ff] font-bold">┌──(canh㎕canh-sec)-[~]</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="prompt text-[#58a6ff] font-bold">└─$</span>
+                                <span class="command" id="line1"></span><span class="cursor" id="cursor1" style="display:none;"></span>
+                            </div>
+                            <div class="terminal-line" id="output1" style="display:none; font-size: 0.9em; white-space: pre;">
+                                <span class="output" id="output1-text"></span>
+                            </div>
+                            
+                            <!-- Second command wrapper -->
+                            <div id="cmd2-wrapper" style="display:none; margin-top: 15px;">
+                                <div class="terminal-line">
+                                    <span class="prompt text-[#58a6ff] font-bold">┌──(canh㎕canh-sec)-[~]</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span class="prompt text-[#58a6ff] font-bold">└─$</span>
+                                    <span class="command" id="line2"></span><span class="cursor" id="cursor2" style="display:none;"></span>
+                                </div>
+                                <div class="terminal-line" id="output2" style="display:none; font-size: 0.9em; white-space: pre;">
+                                    <span class="output" id="output2-text"></span>
+                                </div>
+                            </div>
+
+                            <!-- Final waiting prompt -->
+                            <div id="final-prompt" style="display:none; margin-top: 15px;">
+                                <div class="terminal-line">
+                                    <span class="prompt text-[#58a6ff] font-bold">┌──(canh㎕canh-sec)-[~]</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span class="prompt text-[#58a6ff] font-bold">└─$</span>
+                                    <span class="cursor" style="display:inline-block;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -277,8 +302,12 @@
 
         // Initialize terminal typing animation
         window.addEventListener('load', function () {
+            // Initial SSH connection command
+            const cmd0 = "ssh canh@sec-server.local";
+
             // First command - TShark packet analysis (Realistic SOC web attack detection)
             const cmd1 = "tshark -r incident.pcap -Y \"http.request.method == POST\" | head -n 3";
+
             const output1 = `    1 0.000000 10.0.0.45 → 192.168.1.100 HTTP 571 POST /api/v1/auth HTTP/1.1
     2 0.051234 10.0.0.45 → 192.168.1.100 HTTP 1024 POST /upload/shell.php HTTP/1.1
     3 0.103456 10.0.0.45 → 192.168.1.100 HTTP 852 POST /api/cmd?exec=whoami HTTP/1.1`;
@@ -289,21 +318,47 @@
 6288   1464   powershell.exe   0xca8b4c00000     12        384       2026-03-13 10:23:45
 7112   6288   cmd.exe          0xd09c5d00000     1         42        2026-03-13 10:24:12`;
 
-            typeText(document.getElementById('line1'), cmd1, 45, function () {
-                document.getElementById('cursor1').style.display = 'none';
-                document.getElementById('output1').style.display = 'block';
-                typeText(document.getElementById('output1-text'), output1, 25, function () {
+            // Start typing SSH
+            typeText(document.getElementById('ssh-cmd'), cmd0, 45, function () {
+                document.getElementById('ssh-cursor').style.display = 'none';
+                
+                // Simulate SSH connection delay then show Kali banner
+                setTimeout(function() {
+                    document.getElementById('kali-session').style.display = 'block';
+                    document.getElementById('cursor1').style.display = 'inline-block';
 
-                    // Second command after delay
-                    setTimeout(function () {
-                        document.getElementById('cursor2').style.display = 'block';
-                        typeText(document.getElementById('line2'), cmd2, 40, function () {
-                            document.getElementById('cursor2').style.display = 'none';
-                            document.getElementById('output2').style.display = 'block';
-                            typeText(document.getElementById('output2-text'), output2, 20);
+                    // Start typing Command 1
+                    setTimeout(function() {
+                        typeText(document.getElementById('line1'), cmd1, 45, function () {
+                            document.getElementById('cursor1').style.display = 'none';
+                            document.getElementById('output1').style.display = 'block';
+                            
+                            typeText(document.getElementById('output1-text'), output1, 25, function () {
+                                // Show Command 2 wrapper after output 1
+                                setTimeout(function () {
+                                    document.getElementById('cmd2-wrapper').style.display = 'block';
+                                    document.getElementById('cursor2').style.display = 'inline-block';
+                                    
+                                    // Start typing Command 2
+                                    typeText(document.getElementById('line2'), cmd2, 40, function () {
+                                        document.getElementById('cursor2').style.display = 'none';
+                                        document.getElementById('output2').style.display = 'block';
+                                        
+                                        typeText(document.getElementById('output2-text'), output2, 20, function() {
+                                            // Show final blinking prompt waiting for input
+                                            setTimeout(function() {
+                                                document.getElementById('final-prompt').style.display = 'block';
+                                                // auto scroll to bottom when finished
+                                                const terminalContent = document.getElementById('terminal');
+                                                terminalContent.scrollTop = terminalContent.scrollHeight;
+                                            }, 500);
+                                        });
+                                    });
+                                }, 1200);
+                            });
                         });
-                    }, 1200);
-                });
+                    }, 500);
+                }, 800);
             });
         });
     </script>
