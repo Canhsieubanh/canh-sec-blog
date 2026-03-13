@@ -415,6 +415,11 @@ def search_api():
         'category': p['category']
     } for p in results])
 
+@app.route('/keep-alive')
+def keep_alive():
+    """Keep-alive endpoint to prevent Render from sleeping"""
+    return jsonify({'status': 'ok', 'message': 'App is awake'}), 200
+
 # Error handlers
 @app.errorhandler(404)
 def not_found(error):
