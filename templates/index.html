@@ -113,20 +113,23 @@
     <section class="max-w-7xl mx-auto px-4 py-12 md:py-20 flex flex-col lg:flex-row gap-12">
         <!-- Left Column: Intro + Latest Posts (approx 65%) -->
         <div class="w-full lg:w-[65%] flex flex-col gap-12">
-            
+
             <!-- Intro Text -->
             <div class="flex flex-col gap-6">
                 <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight">
                     Cảnh's <span class="text-[#58a6ff]">Security Space</span>
                 </h1>
                 <p class="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
-                    Digital Forensics 🔍, Malware Analysis 🦠, and CTF Write-ups 🚩. Documenting my journey through the bits and bytes of information security.
+                    Digital Forensics 🔍, Malware Analysis 🦠, and CTF Write-ups 🚩. Documenting my journey through the
+                    bits and bytes of information security.
                 </p>
                 <div class="flex flex-wrap gap-4 mt-2">
-                    <a href="/blog" class="btn-primary px-6 py-3 rounded-lg font-bold text-center shadow-[0_0_15px_rgba(88,166,255,0.2)]">
+                    <a href="/blog"
+                        class="btn-primary px-6 py-3 rounded-lg font-bold text-center shadow-[0_0_15px_rgba(88,166,255,0.2)]">
                         📚 Read Write-ups
                     </a>
-                    <a href="#about" class="border border-[#30363d] text-gray-300 px-6 py-3 rounded-lg font-bold hover:border-[#58a6ff] hover:text-[#58a6ff] transition duration-200 text-center">
+                    <a href="#about"
+                        class="border border-[#30363d] text-gray-300 px-6 py-3 rounded-lg font-bold hover:border-[#58a6ff] hover:text-[#58a6ff] transition duration-200 text-center">
                         👨‍💻 About Me
                     </a>
                 </div>
@@ -135,22 +138,27 @@
             <!-- Latest posts directly below intro -->
             <div>
                 <div class="flex justify-between items-end mb-6">
-                    <h2 class="text-2xl font-bold text-white border-b-2 border-[#58a6ff] pb-2 inline-block">Latest Discovered</h2>
+                    <h2 class="text-2xl font-bold text-white border-b-2 border-[#58a6ff] pb-2 inline-block">Latest
+                        Discovered</h2>
                     <a href="/blog" class="text-[#58a6ff] hover:text-white transition text-sm font-bold">View all →</a>
                 </div>
-                
+
                 {% if latest_posts %}
                 <div class="flex flex-col gap-4">
                     {% for post in latest_posts %}
-                    <a href="/post/{{ post.slug }}" class="card p-5 hover:border-[#58a6ff] flex flex-col sm:flex-row justify-between sm:items-center gap-4 group transition-all bg-[#161b22]">
+                    <a href="/post/{{ post.slug }}"
+                        class="card p-5 hover:border-[#58a6ff] flex flex-col sm:flex-row justify-between sm:items-center gap-4 group transition-all bg-[#161b22]">
                         <div class="flex-1">
-                            <h3 class="text-lg font-bold text-gray-200 group-hover:text-[#58a6ff] mb-2">{{ post.title }}</h3>
+                            <h3 class="text-lg font-bold text-gray-200 group-hover:text-[#58a6ff] mb-2">{{ post.title }}
+                            </h3>
                             <div class="flex items-center gap-3 text-xs text-gray-500">
-                                <span class="bg-[#0d1117] px-2 py-1 rounded text-[#58a6ff] border border-[#30363d]">{{ post.category }}</span>
+                                <span class="bg-[#0d1117] px-2 py-1 rounded text-[#58a6ff] border border-[#30363d]">{{
+                                    post.category }}</span>
                                 <span>{{ post.date | format_date }}</span>
                             </div>
                         </div>
-                        <div class="text-[#58a6ff] text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 hidden sm:block">
+                        <div
+                            class="text-[#58a6ff] text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 hidden sm:block">
                             Read →
                         </div>
                     </a>
@@ -201,14 +209,20 @@
                 <!-- Expertise Tags (Under Terminal) -->
                 <div class="mt-6 flex flex-wrap gap-2">
                     <span class="text-xs text-gray-500 font-mono w-full mb-1">// Core Focus</span>
-                    <span class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">Digital Forensics</span>
-                    <span class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">CTF</span>
-                    <span class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">Malware Analysis</span>
-                    <span class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">Networking</span>
+                    <span
+                        class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">Digital
+                        Forensics</span>
+                    <span
+                        class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">CTF</span>
+                    <span
+                        class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">Malware
+                        Analysis</span>
+                    <span
+                        class="bg-[#161b22] text-xs text-gray-400 px-3 py-1.5 rounded border border-[#30363d] hover:border-[#58a6ff] cursor-default transition">Networking</span>
                 </div>
             </div>
         </div>
-        
+
         <!-- Audio elements for terminal typing sound -->
         <audio id="typingSound" preload="auto">
             <source src="/static/sounds/keyboard.mp3" type="audio/mpeg">
@@ -254,18 +268,17 @@
 
         // Initialize terminal typing animation
         window.addEventListener('load', function () {
-            // First command - TShark packet analysis
-            const cmd1 = "tshark -r capture.pcap -Y \"tcp.port==443\" | head -5";
-            const output1 = `    1   0.000000    192.168.1.100 → 104.16.132.23  TLSv1.3 571 Client Hello
-    2   0.002341    104.16.132.23 → 192.168.1.100  TLSv1.3 83 Server Hello
-    3   0.004512    104.16.132.23 → 192.168.1.100  TLSv1.3 4337 Certificate
-    4   0.006823    192.168.1.100 → 104.16.132.23  TLSv1.3 139 Finished`;
+            // First command - TShark packet analysis (Realistic SOC web attack detection)
+            const cmd1 = "tshark -r incident.pcap -Y \"http.request.method == POST\" | head -n 3";
+            const output1 = `    1 0.000000 10.0.0.45 → 192.168.1.100 HTTP 571 POST /api/v1/auth HTTP/1.1
+    2 0.051234 10.0.0.45 → 192.168.1.100 HTTP 1024 POST /upload/shell.php HTTP/1.1
+    3 0.103456 10.0.0.45 → 192.168.1.100 HTTP 852 POST /api/cmd?exec=whoami HTTP/1.1`;
 
-            // Second command - Volatility memory analysis
-            const cmd2 = "volatility3 windows.pslist -f memory.dmp | grep -E 'explorer|svchost'";
-            const output2 = `explorer.exe       6288  1464  8.2M 2026-03-13 10:23:45
-svchost.exe       1024  456   12.5M 2026-03-13 09:15:30
-svchost.exe       2156  456   9.8M 2026-03-13 09:15:31`;
+            // Second command - Volatility memory analysis (DFIR process hunt)
+            const cmd2 = "vol -f win10_mem.raw windows.pslist | grep -E \"powershell|cmd\"";
+            const output2 = `PID    PPID   ImageFileName    Offset(V)         Threads   Handles   CreateTime
+6288   1464   powershell.exe   0xca8b4c00000     12        384       2026-03-13 10:23:45
+7112   6288   cmd.exe          0xd09c5d00000     1         42        2026-03-13 10:24:12`;
 
             typeText(document.getElementById('line1'), cmd1, 45, function () {
                 document.getElementById('cursor1').style.display = 'none';
