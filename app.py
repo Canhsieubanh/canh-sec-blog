@@ -192,8 +192,9 @@ def blog():
     # Sort by date (newest first)
     filtered_posts = sorted(filtered_posts, key=lambda x: x['date'], reverse=True)
     
-    # Get all unique categories and tags for filtering
-    all_categories = list(set(p['category'] for p in posts))
+    # Pre-defined base categories
+    base_categories = ["Digital Forensics", "General Skills"]
+    all_categories = list(set([p['category'] for p in posts] + base_categories))
     
     # Pre-defined base tags
     base_tags = [
