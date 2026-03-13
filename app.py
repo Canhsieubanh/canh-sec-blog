@@ -194,7 +194,16 @@ def blog():
     
     # Get all unique categories and tags for filtering
     all_categories = list(set(p['category'] for p in posts))
-    all_tags = list(set(tag for p in posts for tag in p['tags']))
+    
+    # Pre-defined base tags
+    base_tags = [
+        "Network", "Memory", "Disk & File System", "Log Analysis", 
+        "Steganography", "Document & Malware", "Linux/Command Line Basics", 
+        "Data Encoding & Decoding", "Basic Cryptography", 
+        "Scripting & Automation", "Regular Expressions", "Web & Network Basics"
+    ]
+    all_tags = list(set([tag for p in posts for tag in p['tags']] + base_tags))
+    
     all_difficulties = list(set(p['difficulty'] for p in posts))
     
     return render_template('blog.html',
